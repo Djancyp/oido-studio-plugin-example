@@ -195,7 +195,7 @@ func (p *PluginGRPCPlugin) GRPCClient(ctx context.Context, broker *plugin.GRPCBr
 // Handshake config
 const (
 	MagicCookieKey   = "OIDO_PLUGIN"
-	MagicCookieValue = "extension"
+	MagicCookieValue = "oido_plugin"
 )
 
 func main() {

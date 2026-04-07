@@ -6,7 +6,7 @@ DIST_DIR := dist
 
 build:
 	@echo "Building $(BINARY)..."
-	go build -o $(BINARY) .
+	CGO_ENABLED=0 go build -o $(BINARY) .
 	@echo "Done! Binary: $(BINARY)"
 	@ls -lh $(BINARY)
 
