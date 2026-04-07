@@ -1,0 +1,10 @@
+name = "hn-top"
+description = "Fetch and display the top Hacker News stories."
+
+prompt = """
+Fetch the top {{limit}} stories from Hacker News using the hn_top_stories tool.
+Format them as a numbered list with title, URL, score, author, and comment count.
+"""
+
+[parameters]
+limit = { type = "number", description = "Number of stories to fetch (default: 10, max: 30)", default = 10 }

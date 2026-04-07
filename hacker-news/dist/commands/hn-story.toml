@@ -1,0 +1,10 @@
+name = "hn-story"
+description = "Fetch details for a specific Hacker News story by ID."
+
+prompt = """
+Fetch the details for Hacker News story ID {{id}} using the hn_story_detail tool.
+Format the response with title, URL, score, author, text (if available), and comment count.
+"""
+
+[parameters]
+id = { type = "number", description = "Hacker News story ID", required = true }

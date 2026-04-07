@@ -1,22 +1,34 @@
 .PHONY: build clean dist
 
 PLUGIN_NAME := hacker-news
-BINARY := $(PLUGIN_NAME)-plugin
+BINARY := $(PLUGIN_NAME)-mcp
 DIST_DIR := dist
 
+# Build MCP server
 build:
-	@echo "Building $(BINARY)..."
+	@echo "Building $(PLUGIN_NAME) MCP server..."
 	CGO_ENABLED=0 go build -o $(BINARY) .
-	@echo "Done! Binary: $(BINARY)"
+	@echo "✓ Built: $(BINARY)"
 	@ls -lh $(BINARY)
 
-# Build and package as a zip ready for upload via the plugin UI
+# Package as zip for upload via plugin UI
 dist: build
 	@mkdir -p $(DIST_DIR)
-	@echo "Packaging $(PLUGIN_NAME).zip for upload..."
-	@cd $(DIST_DIR) && zip -j ../$(PLUGIN_NAME).zip ../plugin.json ../$(BINARY)
-	@echo "Done! Upload $(PLUGIN_NAME).zip via the Plugins UI"
-	@ls -lh $(PLUGIN_NAME).zip
+	@echo "Packaging $(PLUGIN_NAME).zip..."
+	@zip -j $(DIST_DIR)/$(PLUGIN_NAME).zip \
+		plugin.json \
+		qwen-extension.json \
+		QWEN.md \
+		$(BINARY)
+	@mkdir -p $(DIST_DIR)/commands
+	@cp -r commands/* $(DIST_DIR)/commands/ 2>/dev/null || true
+	@cd $(DIST_DIR) && zip -r ../$(DIST_DIR)/$(PLUGIN_NAME).zip commands/ 2>/dev/null || true
+	@echo "✓ Packaged: $(DIST_DIR)/$(PLUGIN_NAME).zip"
+	@ls -lh $(DIST_DIR)/$(PLUGIN_NAME).zip
+	@echo ""
+	@echo "Next steps:"
+	@echo "  1. Upload $(DIST_DIR)/$(PLUGIN_NAME).zip via Plugins UI"
+	@echo "  2. After upload, run: qwen extensions link <plugins-dir>/$(PLUGIN_NAME)"
 
 clean:
 	rm -f $(BINARY)
