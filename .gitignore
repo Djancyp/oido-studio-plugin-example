@@ -2,6 +2,9 @@
 *-plugin
 *-plugin.exe
 
+# Build artifacts
+*.zip
+
 # Go build artifacts
 *.exe
 *.exe~
