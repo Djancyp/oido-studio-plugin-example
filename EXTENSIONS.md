@@ -2,23 +2,32 @@
 
 ## Overview
 
-OIDO Studio plugins are now **MCP-only** (Model Context Protocol) and serve as Qwen CLI extensions.
+OIDO Studio supports **two types** of extensions:
 
-After uploading and installing a plugin to oido-studio, it **automatically** registers as a Qwen CLI extension:
-```bash
-# Automatic after upload - no manual step needed!
-qwen extensions link <plugins-dir>/<plugin-name>
-```
+### 1. External Plugins (MCP)
+- Uploaded as zip via Plugins UI
+- Use `modelcontextprotocol/go-sdk` with stdio transport
+- Auto-linked to Qwen CLI after upload
+- Can be deleted/uninstalled
+
+### 2. Bundled Extensions (Internal)
+- Compiled into the binary
+- Direct access to database and services
+- Automatically registered on startup
+- Core functionality (cannot be removed)
+
+Both types show up as Qwen extensions and work the same way from the LLM's perspective.
 
 ## Architecture
 
-### Plugin Type
+### Extension Types
 
-OIDO Studio uses **one plugin type** now:
+OIDO Studio supports 2 extension types:
 
-| Type | Protocol | Purpose |
-|------|----------|---------|
-| **extension** | MCP (go-sdk) | LLM tools and hooks for Qwen CLI |
+| Type | Protocol | Source | Uninstall? |
+|------|----------|--------|------------|
+| **External** | MCP (go-sdk, stdio) | Upload zip | ✅ Yes |
+| **Bundled** | Direct registration | Compiled in | ❌ No (core) |
 
 ### Plugin Structure
 
@@ -104,7 +113,7 @@ qwen extensions list
   "description": "Fetch and browse Hacker News top stories via MCP server.",
   "mcpServers": {
     "hacker-news": {
-      "command": "${extensionPath}/hacker-news-mcp",
+      "command": "${extensionPath}/bin/hacker-news-mcp",
       "args": [],
       "env": {}
     }
@@ -114,13 +123,33 @@ qwen extensions list
 }
 ```
 
+### Path Resolution
+
+The plugin manager automatically updates `${extensionPath}` to the **actual absolute path** after upload:
+
+**Before Upload (in zip):**
+```json
+{
+  "command": "${extensionPath}/bin/hacker-news-mcp"
+}
+```
+
+**After Upload (extracted to `/data/plugins/hacker-news/`):**
+```json
+{
+  "command": "/data/plugins/hacker-news/bin/hacker-news-mcp"
+}
+```
+
+This ensures Qwen CLI can find and execute the MCP server binary at the correct location.
+
 ### Variables
 
-| Variable | Description |
-|----------|-------------|
-| `${extensionPath}` | Full path to the extension directory |
-| `${workspacePath}` | Full path to the current workspace |
-| `${/}` or `${pathSeparator}` | OS-specific path separator (`/` or `\`) |
+| Variable | Replaced With | Example |
+|----------|---------------|---------|
+| `${extensionPath}` | Actual plugin directory path | `/data/plugins/hacker-news` |
+| `${/}` | OS path separator | `/` or `\` |
+| `${pathSeparator}` | OS path separator | `/` or `\` |
 
 ## MCP Server Implementation
 
@@ -171,6 +200,70 @@ func main() {
 ## Qwen CLI Commands
 
 Extensions can define custom commands via TOML files in the `commands/` directory.
+
+## Skills - Teaching the LLM
+
+Extensions should include a `SKILL.md` file to teach the LLM how to properly use the extension's tools.
+
+### Skill Structure
+
+Create `skills/<extension-name>/SKILL.md` with:
+
+```markdown
+---
+name: extension-name
+description: Brief description of what the extension does
+---
+
+# Extension Name
+
+## Overview
+What the extension does and when to use it
+
+## Available Tools
+Detailed documentation of each tool:
+- Tool name
+- Parameters
+- When to use
+- Example usage
+- Response format
+
+## Best Practices
+Guidelines for using the tools effectively
+
+## Example Interactions
+Real-world conversation examples
+
+## Limitations
+What the tools cannot do
+
+## Triggers
+Keywords/phrases that should activate these tools
+```
+
+### Why Skills Matter
+
+The `SKILL.md` file:
+- ✅ Teaches the LLM **when** to use each tool
+- ✅ Provides **example usage** patterns
+- ✅ Documents **parameters** and expected inputs
+- ✅ Shows **best practices** and common workflows
+- ✅ Lists **limitations** and boundaries
+- ✅ Defines **triggers** for automatic tool selection
+
+### Skill Discovery
+
+Qwen CLI automatically discovers and loads skills from:
+- `skills/<name>/SKILL.md` in extension directories
+- Bundled skills in the main application
+
+### Example: Hacker News Skill
+
+See `plugins/hacker-news/skills/hacker-news/SKILL.md` for a complete example that:
+- Documents `hn_top_stories` and `hn_story_detail` tools
+- Provides conversation examples
+- Lists best practices (default limits, formatting)
+- Defines trigger phrases ("HN", "Hacker News", "tech news")
 
 ### Example: `commands/hn-top.toml`
 

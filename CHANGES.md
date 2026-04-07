@@ -97,7 +97,18 @@ if HasQwenExtensionManifest(pluginDir) {
 }
 ```
 
-### 2. Link Function
+### 2. Auto-Unlink on Delete
+
+```go
+// In UninstallPlugin()
+if isQwenExtension {
+    if err := m.unlinkQwenExtension(id); err != nil {
+        m.logger.Printf("[plugins] warning: failed to unlink Qwen extension: %v", err)
+    }
+}
+```
+
+### 3. Link Function with Auto-Confirm
 
 ```go
 func (m *Manager) linkQwenExtension(pluginDir string) error {
@@ -107,12 +118,34 @@ func (m *Manager) linkQwenExtension(pluginDir string) error {
     }
     
     cmd := exec.Command(qwenPath, "extensions", "link", pluginDir)
+    cmd.Stdin = bytes.NewReader([]byte("Y\n"))  // Auto-confirm prompt
     output, err := cmd.CombinedOutput()
     if err != nil {
         return fmt.Errorf("qwen extensions link failed: %w\nOutput: %s", err, string(output))
     }
     
     m.logger.Printf("[plugins] ✓ Linked Qwen extension: %s", pluginDir)
+    return nil
+}
+```
+
+### 4. Unlink Function
+
+```go
+func (m *Manager) unlinkQwenExtension(extensionName string) error {
+    qwenPath, err := exec.LookPath("qwen")
+    if err != nil {
+        return fmt.Errorf("qwen CLI not found in PATH")
+    }
+    
+    cmd := exec.Command(qwenPath, "extensions", "uninstall", extensionName)
+    cmd.Stdin = bytes.NewReader([]byte("Y\n"))  // Auto-confirm prompt
+    output, err := cmd.CombinedOutput()
+    if err != nil {
+        return fmt.Errorf("qwen extensions uninstall failed: %w\nOutput: %s", err, string(output))
+    }
+    
+    m.logger.Printf("[plugins] ✓ Unlinked Qwen extension: %s", extensionName)
     return nil
 }
 ```

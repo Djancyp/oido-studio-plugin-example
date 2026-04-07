@@ -4,7 +4,7 @@
   "description": "Fetch and browse Hacker News top stories via MCP server. Provides tools for fetching top stories and story details.",
   "mcpServers": {
     "hacker-news": {
-      "command": "${extensionPath}/bin/hacker-news-mcp",
+      "command": "${extensionPath}/hacker-news-mcp",
       "args": [],
       "env": {}
     }

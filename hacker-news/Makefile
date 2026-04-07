@@ -15,20 +15,22 @@ build:
 dist: build
 	@mkdir -p $(DIST_DIR)
 	@echo "Packaging $(PLUGIN_NAME).zip..."
-	@zip -j $(DIST_DIR)/$(PLUGIN_NAME).zip \
-		plugin.json \
-		qwen-extension.json \
-		QWEN.md \
-		$(BINARY)
+	@cd $(DIST_DIR) && zip -j ../$(DIST_DIR)/$(PLUGIN_NAME).zip \
+		../plugin.json \
+		../qwen-extension.json \
+		../QWEN.md \
+		../$(BINARY)
 	@mkdir -p $(DIST_DIR)/commands
 	@cp -r commands/* $(DIST_DIR)/commands/ 2>/dev/null || true
-	@cd $(DIST_DIR) && zip -r ../$(DIST_DIR)/$(PLUGIN_NAME).zip commands/ 2>/dev/null || true
+	@mkdir -p $(DIST_DIR)/skills/hacker-news
+	@cp -r skills/hacker-news/* $(DIST_DIR)/skills/hacker-news/ 2>/dev/null || true
+	@cd $(DIST_DIR) && zip -r ../$(DIST_DIR)/$(PLUGIN_NAME).zip commands/ skills/ 2>/dev/null || true
 	@echo "✓ Packaged: $(DIST_DIR)/$(PLUGIN_NAME).zip"
 	@ls -lh $(DIST_DIR)/$(PLUGIN_NAME).zip
 	@echo ""
 	@echo "Next steps:"
 	@echo "  1. Upload $(DIST_DIR)/$(PLUGIN_NAME).zip via Plugins UI"
-	@echo "  2. After upload, run: qwen extensions link <plugins-dir>/$(PLUGIN_NAME)"
+	@echo "  2. After upload, auto-links to Qwen CLI"
 
 clean:
 	rm -f $(BINARY)
