@@ -1,0 +1,9 @@
+name = "fzf-files"
+description = "Fuzzy-find files using fzf"
+extension = "swiss-army-knife"
+tool = "fzf_find_files"
+
+[parameters]
+path = { type = "string", required = false, description = "Root directory to search" }
+query = { type = "string", required = false, description = "Fuzzy query to filter" }
+max_results = { type = "integer", required = false, description = "Maximum results to return" }

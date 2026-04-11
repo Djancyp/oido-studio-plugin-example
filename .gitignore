@@ -1,9 +1,12 @@
 # Plugin binaries (built, not committed)
 *-plugin
 *-plugin.exe
+*-mcp
+*-mcp.exe
 
 # Build artifacts
 *.zip
+dist/
 
 # Go build artifacts
 *.exe

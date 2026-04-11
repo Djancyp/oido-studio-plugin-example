@@ -1,0 +1,7 @@
+name = "cron-list"
+description = "List all scheduled cron jobs and show their status."
+
+prompt = """
+List all cron jobs using the cron_list tool.
+Display them in a table with columns: ID, Name, Schedule, Enabled, Delivery.
+"""

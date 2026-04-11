@@ -1,0 +1,31 @@
+{
+  "name": "oido-cron",
+  "version": "1.0.0",
+  "description": "Internal cron management extension for scheduling and managing agent jobs. Provides tools to create, manage, and monitor scheduled tasks.",
+  "mcpServers": {
+    "oido-cron": {
+      "command": "${extensionPath}/oido-cron-mcp",
+      "args": [],
+      "env": {
+        "OIDO_API_TOKEN": "${setting:OIDO_API_TOKEN}",
+        "OIDO_API_BASE": "${setting:OIDO_API_BASE}"
+      }
+    }
+  },
+  "contextFileName": "QWEN.md",
+  "excludeTools": [],
+  "settings": [
+    {
+      "name": "API Token",
+      "description": "Bearer token for authenticating with the OIDO Studio API",
+      "envVar": "OIDO_API_TOKEN",
+      "sensitive": true
+    },
+    {
+      "name": "API Base URL",
+      "description": "Base URL of the OIDO Studio API server",
+      "envVar": "OIDO_API_BASE",
+      "sensitive": false
+    }
+  ]
+}

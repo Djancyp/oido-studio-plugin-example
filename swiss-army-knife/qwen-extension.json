@@ -1,0 +1,14 @@
+{
+  "name": "swiss-army-knife",
+  "version": "1.0.0",
+  "description": "Multi-tool extension providing ripgrep search, fzf fuzzy finding, and git object browsing.",
+  "mcpServers": {
+    "swiss-army-knife": {
+      "command": "${extensionPath}/swiss-army-knife-mcp",
+      "args": [],
+      "env": {}
+    }
+  },
+  "contextFileName": "QWEN.md",
+  "excludeTools": []
+}

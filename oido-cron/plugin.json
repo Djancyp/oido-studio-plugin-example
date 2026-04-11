@@ -1,0 +1,16 @@
+{
+  "id": "oido-cron",
+  "name": "OIDO Cron Manager",
+  "version": "1.0.0",
+  "description": "Internal cron management plugin for scheduling and managing agent jobs. Provides MCP tools for cron operations.",
+  "type": "extension",
+  "enabled": true,
+  "binary": "oido-cron-mcp",
+  "protocol_version": 1,
+  "os": ["linux", "darwin"],
+  "arch": ["amd64", "arm64"],
+  "config_schema": {},
+  "capabilities": ["cron_list", "cron_get", "cron_add", "cron_toggle", "cron_run", "cron_logs", "cron_update", "cron_delete"],
+  "author": "oido-studio",
+  "homepage": ""
+}

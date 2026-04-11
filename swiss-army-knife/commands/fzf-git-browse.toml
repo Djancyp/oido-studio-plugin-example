@@ -1,0 +1,10 @@
+name = "fzf-git-browse"
+description = "Browse git objects (branches, tags, commits, stashes, etc)"
+extension = "swiss-army-knife"
+tool = "fzf_git_browse"
+
+[parameters]
+type = { type = "string", required = true, description = "Git object type: branches, tags, commits, stashes, remotes, reflogs, worktrees, files" }
+path = { type = "string", required = false, description = "Path to git repository" }
+query = { type = "string", required = false, description = "Fuzzy filter for results" }
+max_results = { type = "integer", required = false, description = "Maximum results to return" }

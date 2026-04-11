@@ -1,0 +1,18 @@
+name = "cron-add"
+description = "Create a new scheduled cron job."
+
+prompt = """
+Create a new cron job with the following parameters:
+- name: {{name}}
+- schedule: {{schedule}}
+- message: {{message}}
+
+Use the cron_add tool to create the job.
+If delivery is specified, set it accordingly.
+"""
+
+[parameters]
+name = { type = "string", description = "Job name", required = true }
+schedule = { type = "string", description = "Cron expression (e.g. '0 9 * * *')", required = true }
+message = { type = "string", description = "Prompt for the agent", required = true }
+delivery = { type = "string", description = "Delivery mode: none, session, or channel", default = "none" }

@@ -1,0 +1,12 @@
+name = "rg-search"
+description = "Search for text patterns using ripgrep (rg)"
+extension = "swiss-army-knife"
+tool = "rg_search"
+
+[parameters]
+pattern = { type = "string", required = true, description = "Search pattern (regex)" }
+path = { type = "string", required = false, description = "Directory to search" }
+file_type = { type = "string", required = false, description = "File type filter (e.g. go, py, js)" }
+case_sensitive = { type = "boolean", required = false, description = "Case-sensitive matching" }
+context_lines = { type = "integer", required = false, description = "Context lines around matches" }
+max_count = { type = "integer", required = false, description = "Maximum matches to return" }

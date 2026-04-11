@@ -1,0 +1,16 @@
+{
+  "id": "swiss-army-knife",
+  "name": "Swiss Army Knife",
+  "version": "1.0.0",
+  "description": "Multi-tool extension providing ripgrep search, fzf fuzzy finding, and git object browsing. A swiss army knife for code navigation and file discovery.",
+  "type": "extension",
+  "enabled": true,
+  "binary": "swiss-army-knife-mcp",
+  "protocol_version": 1,
+  "os": ["linux", "darwin"],
+  "arch": ["amd64", "arm64"],
+  "config_schema": {},
+  "capabilities": ["rg_search", "fzf_find_files", "fzf_filter_lines", "fzf_git_browse"],
+  "author": "oido-studio",
+  "homepage": ""
+}
